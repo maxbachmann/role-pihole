@@ -1,0 +1,133 @@
+---
+
+- name: "Setting hostname to 'pihole'"
+  hostname:
+    name: pihole
+  tags: admin
+  register: reboot_device
+
+#- name: Set static IP configuration
+#  become: True
+#  template:
+#    src="etc_network_interfaces.j2"
+#    dest="/etc/network/interfaces"
+#    owner=root
+#    group=root
+#    mode=0644
+#  tags: pihole
+
+- name: Set static IP configuration dhcp
+  become: True
+  template:
+    src="static_ip.j2"
+    dest="/etc/dhcpcd.conf"
+    owner=root
+    group=root
+    mode=0644
+  tags: pihole
+
+
+- name: 'Update APT package cache'
+  apt:
+    update_cache: yes
+  tags: admin
+
+- name: Install admin tools (vim, htop, git)
+  apt:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+    - vim
+    - htop
+    - git
+
+- name: Ensures /etc/pihole dir exists
+  become: True
+  file: 
+    path=/etc/pihole
+    state=directory
+  tags: pihole
+
+- name: Create pihole configuration
+  become: True
+  template:
+    src="setupVars.conf.j2"
+    dest="/etc/pihole/setupVars.conf"
+    owner=root
+    group=root
+    mode=0644
+  tags: pihole
+
+- git:
+    repo: 'https://github.com/pi-hole/pi-hole.git'
+    dest: /home/Pi-hole
+    depth: 1
+
+- name: Install Pi-Hole
+  command: bash "/home/Pi-hole/automated install/basic-install.sh" --unattended
+  become: yes
+
+- uri:
+    url: https://v.firebog.net/hosts/lists.php?type=tick
+    return_content: yes
+  register: filterlists
+
+- name: add filterlists
+  blockinfile:
+    path: /etc/pihole/adlists.list
+    block: "{{ filterlists.content }}"
+    backup: yes
+    owner: root
+    group: root
+    mode: 0644
+
+- name: update Filterlists
+  command: pihole -g
+
+- name: Install unbound
+  apt:
+    name: unbound
+    state: present
+
+- name: Ensures /var/lib/unbound dir exists
+  become: True
+  file: 
+    path=/var/lib/unbound
+    state=directory
+  tags: pihole
+
+- name: download root hints
+  get_url: 
+    url=https://www.internic.net/domain/named.root
+    dest=/var/lib/unbound/root.hints
+
+- name: Create unbound config
+  become: True
+  template:
+    src="unbound_config.j2"
+    dest="/etc/unbound/unbound.conf.d/pi-hole.conf"
+    owner=root
+    group=root
+    mode=0644
+  tags: pihole
+
+- name: Start unbound service
+  become: true
+  service:
+    name: unbound
+    state: started
+
+- name: Reboot immediately if there was a change.
+  shell: "sleep 5 && reboot"
+  async: 1
+  poll: 0
+  when: reboot_device is changed
+
+- name: Wait for the reboot to complete if there was a change.
+  wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300
+  when: reboot_device is changed
