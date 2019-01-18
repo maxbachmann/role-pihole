@@ -1,31 +1,9 @@
 ---
-
 - name: "Setting hostname to 'pihole'"
   hostname:
     name: pihole
   tags: admin
   register: reboot_device
-
-#- name: Set static IP configuration
-#  become: True
-#  template:
-#    src="etc_network_interfaces.j2"
-#    dest="/etc/network/interfaces"
-#    owner=root
-#    group=root
-#    mode=0644
-#  tags: pihole
-
-- name: Set static IP configuration dhcp
-  become: True
-  template:
-    src="static_ip.j2"
-    dest="/etc/dhcpcd.conf"
-    owner=root
-    group=root
-    mode=0644
-  tags: pihole
-
 
 - name: 'Update APT package cache'
   apt:
@@ -99,8 +77,17 @@
 
 - name: download root hints
   get_url: 
-    url=https://www.internic.net/domain/named.root
+    url=https://www.internic.net/domain/named.cache
     dest=/var/lib/unbound/root.hints
+
+- name: add cronjob to update root hints
+  become: yes
+  copy:
+    src: files/root_hints
+    dest: "/etc/cron.weekly"
+    owner: root
+    group: root
+    mode: 0755
 
 - name: Create unbound config
   become: True
