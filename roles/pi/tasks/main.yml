@@ -21,14 +21,14 @@
       - git
 
 - name: Ensures /etc/pihole dir exists
-  become: True
+  become: true
   file:
     path=/etc/pihole
     state=directory
   tags: pihole
 
 - name: Create pihole configuration
-  become: True
+  become: true
   template:
     src="setupVars.conf.j2"
     dest="/etc/pihole/setupVars.conf"
@@ -55,7 +55,7 @@
   blockinfile:
     path: /etc/pihole/adlists.list
     block: "{{ filterlists.content }}"
-    backup: yes
+    backup: true
     owner: root
     group: root
     mode: 0644
@@ -90,7 +90,7 @@
     mode: 0755
 
 - name: Create unbound config
-  become: True
+  become: true
   template:
     src="unbound_config.j2"
     dest="/etc/unbound/unbound.conf.d/pi-hole.conf"
