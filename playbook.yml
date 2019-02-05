@@ -1,4 +1,4 @@
-#!/usr/bin/env ansible-playbook -i hosts --become -c paramiko
+# !/usr/bin/env ansible-playbook -i hosts --become -c paramiko
 ---
 
 - name: Ansible Playbook for configuring Pi-Hole on Raspberry Pi
