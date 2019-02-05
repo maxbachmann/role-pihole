@@ -7,7 +7,7 @@
 
 - name: 'Update APT package cache'
   apt:
-    update_cache: yes
+    update_cache: true
   tags: admin
 
 - name: Install admin tools (vim, htop, git)
@@ -16,13 +16,13 @@
     state: present
   vars:
     packages:
-    - vim
-    - htop
-    - git
+      - vim
+      - htop
+      - git
 
 - name: Ensures /etc/pihole dir exists
   become: True
-  file: 
+  file:
     path=/etc/pihole
     state=directory
   tags: pihole
@@ -44,11 +44,11 @@
 
 - name: Install Pi-Hole
   command: bash "/home/Pi-hole/automated install/basic-install.sh" --unattended
-  become: yes
+  become: true
 
 - uri:
     url: https://v.firebog.net/hosts/lists.php?type=tick
-    return_content: yes
+    return_content: true
   register: filterlists
 
 - name: add filterlists
@@ -70,18 +70,18 @@
 
 - name: Ensures /var/lib/unbound dir exists
   become: True
-  file: 
+  file:
     path=/var/lib/unbound
     state=directory
   tags: pihole
 
 - name: download root hints
-  get_url: 
+  get_url:
     url=https://www.internic.net/domain/named.cache
     dest=/var/lib/unbound/root.hints
 
 - name: add cronjob to update root hints
-  become: yes
+  become: true
   copy:
     src: files/root_hints
     dest: "/etc/cron.weekly"
