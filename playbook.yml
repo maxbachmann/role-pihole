@@ -6,4 +6,4 @@
   roles:
     - pi
   remote_user: pi
-  become: yes
+  become: true
