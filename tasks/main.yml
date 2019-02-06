@@ -50,21 +50,37 @@
     url: https://v.firebog.net/hosts/lists.php?type=tick
     return_content: true
   register: filterlists
-
-- name: add default filterlists
+  
+- name: Ensures /etc/pihole/adlists.lists exists
   become: true
-  copy:
-    src: files/adlists.list
-    dest: "/etc/pihole/adlists.list"
+  file:
+    path=/etc/pihole/adlists.list
     owner: root
     group: root
-    mode: 0755
+    mode: 0644
+
+- name: add default filterlists
+  blockinfile:
+    path: /etc/pihole/adlists.list
+    block: |
+      https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+      https://mirror1.malwaredomains.com/files/justdomains
+      http://sysctl.org/cameleon/hosts
+      https://zeustracker.abuse.ch/blocklist.php?download=domainblocklist
+      https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
+      https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
+      https://hosts-file.net/ad_servers.txt
+    marker: "<!-- {mark} ANSIBLE MANAGED DEFAULT FILTERS -->"
+    owner: root
+    group: root
+    mode: 0644
+  notify: update filterlists
 
 - name: add filterlists
   blockinfile:
     path: /etc/pihole/adlists.list
     block: "{{ filterlists.content }}"
-    backup: true
+    marker: "<!-- {mark} ANSIBLE MANAGED ADDITIONAL FILTERS -->"
     owner: root
     group: root
     mode: 0644
