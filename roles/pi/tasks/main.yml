@@ -117,4 +117,4 @@
     sleep: 5
     delay: 5
     timeout: 300
-  when: reboot_device is changed
+  when: reboot_device is changed and inventory_hostname != "local"
