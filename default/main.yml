@@ -1,3 +1,4 @@
+---
 ansible_connection: ssh
 ansible_ssh_user: pi
 ansible_ssh_pass: raspberry
@@ -16,10 +17,10 @@ fspath_pihole_config: "/etc/pihole"
 
 gateway_ip: 192.168.2.1
 network_interface: wlan0
-ipv4_static: True
+ipv4_static: true
 ipv4_address: "192.168.2.2"
 # per default just use the first available ipv6 address on the interface
-ipv6: True
+ipv6: true
 ipv6_address: "{{ hostvars[inventory_hostname]['ansible_' + network_interface]['ipv6'][0]['address'] }}"
 dns_servers:
   - "194.150.168.168"
