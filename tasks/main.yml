@@ -64,6 +64,7 @@
 
 - name: update Filterlists
   command: pihole -g
+  when: filterlists.changed
 
 - name: Install unbound
   apt:
