@@ -24,18 +24,17 @@
 - name: Ensures /etc/pihole dir exists
   become: true
   file:
-    path=/etc/pihole
-    state=directory
+    path: /etc/pihole
+    state: directory
 
 - name: Create pihole configuration
   become: true
   template:
-    src="templates/setupVars.conf.j2"
-    dest="/etc/pihole/setupVars.conf"
-    owner=root
-    group=root
-    mode=0644
-  tags: pihole
+    src: templates/setupVars.conf.j2
+    dest: /etc/pihole/setupVars.conf
+    owner: root
+    group: root
+    mode: 0644
 
 - name: download pihole
   git:
@@ -50,11 +49,11 @@
     url: https://v.firebog.net/hosts/lists.php?type=tick
     return_content: true
   register: filterlists
-  
+
 - name: Ensures /etc/pihole/adlists.lists exists
   become: true
   file:
-    path=/etc/pihole/adlists.list
+    path: /etc/pihole/adlists.list
     owner: root
     group: root
     mode: 0644
@@ -94,13 +93,13 @@
 - name: Ensures /var/lib/unbound dir exists
   become: true
   file:
-    path=/var/lib/unbound
-    state=directory
+    path: /var/lib/unbound
+    state: directory
 
 - name: download root hints
   get_url:
-    url=https://www.internic.net/domain/named.cache
-    dest=/var/lib/unbound/root.hints
+    url: https://www.internic.net/domain/named.cache
+    dest: /var/lib/unbound/root.hints
 
 - name: add cronjob to update root hints
   become: true
@@ -114,11 +113,11 @@
 - name: Create unbound config
   become: true
   template:
-    src="templates/unbound_config.j2"
-    dest="/etc/unbound/unbound.conf.d/pi-hole.conf"
-    owner=root
-    group=root
-    mode=0644
+    src: templates/unbound_config.j2
+    dest: /etc/unbound/unbound.conf.d/pi-hole.conf
+    owner: root
+    group: root
+    mode: 0644
 
 - name: Start unbound service
   become: true
