@@ -90,7 +90,7 @@
 - name: Ensures /var/lib/unbound dir exists
   become: true
   file:
-    path: /var/lib/unbound/unbound.conf.d
+    path: /var/lib/unbound
     state: directory
 
 - name: download root hints
@@ -111,7 +111,7 @@
   become: true
   template:
     src: templates/unbound_config.j2
-    dest: /etc/unbound/unbound.conf.d/pi-hole.conf
+    dest: /etc/unbound/unbound.conf
     owner: root
     group: root
     mode: 0644
