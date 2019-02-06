@@ -61,10 +61,10 @@
     owner: root
     group: root
     mode: 0644
+  notify: update_filterlists
 
-- name: update Filterlists
+- name: update_filterlists
   command: pihole -g
-  when: filterlists.changed
 
 - name: Install unbound
   apt:
