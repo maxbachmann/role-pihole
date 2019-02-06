@@ -42,7 +42,8 @@
     repo: 'https://github.com/pi-hole/pi-hole.git'
     dest: /home/Pi-hole
     depth: 1
-    notify: install pihole
+    version: master
+  notify: install pihole
 
 - name: download filterlists
   uri:
