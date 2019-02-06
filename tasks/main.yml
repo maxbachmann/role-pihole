@@ -37,7 +37,8 @@
     mode=0644
   tags: pihole
 
-- git:
+- name: download pihole
+  git:
     repo: 'https://github.com/pi-hole/pi-hole.git'
     dest: /home/Pi-hole
     depth: 1
@@ -46,7 +47,8 @@
   command: bash "/home/Pi-hole/automated install/basic-install.sh" --unattended
   become: true
 
-- uri:
+- name: download filterlists
+  uri:
     url: https://v.firebog.net/hosts/lists.php?type=tick
     return_content: true
   register: filterlists
