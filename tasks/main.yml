@@ -54,6 +54,7 @@
   become: true
   file:
     path: /etc/pihole/adlists.list
+    state: touch
     owner: root
     group: root
     mode: 0644
