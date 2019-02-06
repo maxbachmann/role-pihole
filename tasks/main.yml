@@ -11,7 +11,7 @@
   tags: admin
 
 - name: Install admin tools (vim, htop, git)
-  apt:
+  package:
     name: "{{ packages }}"
     state: present
   vars:
@@ -62,7 +62,7 @@
   notify: update filterlists
 
 - name: Install unbound
-  apt:
+  package:
     name: unbound
     state: present
 
