@@ -1,9 +1,4 @@
 ---
-- name: 'Update APT package cache'
-  apt:
-    update_cache: true
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-
 - name: Install admin tools (vim, htop, git)
   package:
     name: "{{ packages }}"
@@ -52,11 +47,12 @@
 
 - name: Ensures /etc/pihole/adlists.lists exists
   become: true
-  file:
-    path: /etc/pihole/adlists.list
-    state: touch
-    owner: root
+  copy:
+    content: ""
+    dest: /etc/pihole/adlists.list
+    force: no
     group: root
+    owner: root
     mode: 0644
 
 - name: add default filterlists
