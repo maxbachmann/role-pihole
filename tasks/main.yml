@@ -51,6 +51,15 @@
     return_content: true
   register: filterlists
 
+- name: add default filterlists
+  become: true
+  copy:
+    src: files/adlists.list
+    dest: "/etc/pihole/adlists.list"
+    owner: root
+    group: root
+    mode: 0755
+
 - name: add filterlists
   blockinfile:
     path: /etc/pihole/adlists.list
