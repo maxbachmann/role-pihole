@@ -53,7 +53,6 @@
     url: https://v.firebog.net/hosts/lists.php?type=tick
     return_content: true
   register: filterlists
-  notify: update_filterlists
 
 - name: add filterlists
   blockinfile:
@@ -63,9 +62,7 @@
     owner: root
     group: root
     mode: 0644
-
-- name: update_filterlists
-  command: pihole -g
+  notify: update_filterlists
 
 - name: Install unbound
   apt:
@@ -122,3 +119,7 @@
     delay: 5
     timeout: 300
   when: reboot_device is changed
+
+handlers:
+  - name: update_filterlists
+    command: pihole -g
