@@ -30,7 +30,7 @@
 - name: Create pihole configuration
   become: true
   template:
-    src="setupVars.conf.j2"
+    src="templates/setupVars.conf.j2"
     dest="/etc/pihole/setupVars.conf"
     owner=root
     group=root
@@ -92,7 +92,7 @@
 - name: Create unbound config
   become: true
   template:
-    src="unbound_config.j2"
+    src="templates/unbound_config.j2"
     dest="/etc/unbound/unbound.conf.d/pi-hole.conf"
     owner=root
     group=root
