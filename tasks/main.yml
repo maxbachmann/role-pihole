@@ -5,7 +5,6 @@
     state: present
   vars:
     packages:
-      - iproute
       - dbus
       - vim
       - htop
