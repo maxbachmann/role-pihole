@@ -1,10 +1,4 @@
 ---
-- name: "Setting hostname to 'pihole'"
-  hostname:
-    name: pihole
-  tags: admin
-  register: reboot_device
-
 - name: 'Update APT package cache'
   apt:
     update_cache: true
@@ -16,9 +10,16 @@
     state: present
   vars:
     packages:
+      - dbus
       - vim
       - htop
       - git
+
+- name: "Setting hostname to 'pihole'"
+  hostname:
+    name: pihole
+  tags: admin
+  register: reboot_device
 
 - name: Ensures /etc/pihole dir exists
   become: true
