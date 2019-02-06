@@ -1,0 +1,9 @@
+---
+- name: install pihole
+  become: true
+  command: bash "/home/Pi-hole/automated install/basic-install.sh" --unattended
+  when: molecule_test != true
+
+- name: update filterlists
+  command: pihole -g
+  when: molecule_test != true

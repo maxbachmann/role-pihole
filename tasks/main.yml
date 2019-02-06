@@ -1,0 +1,97 @@
+---
+- name: Install admin tools (vim, htop, git)
+  package:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - dbus
+      - vim
+      - htop
+      - git
+
+- name: "Setting hostname to 'pihole'"
+  hostname:
+    name: pihole
+  register: reboot_device
+  when: molecule_test != true
+
+- name: Ensures /etc/pihole dir exists
+  become: true
+  file:
+    path: /etc/pihole
+    state: directory
+
+- name: Create pihole configuration
+  become: true
+  template:
+    src: templates/setupVars.conf.j2
+    dest: /etc/pihole/setupVars.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: download pihole
+  git:
+    repo: 'https://github.com/pi-hole/pi-hole.git'
+    dest: /home/Pi-hole
+    depth: 1
+    version: master
+  notify: install pihole
+
+- name: download filterlists
+  uri:
+    url: https://v.firebog.net/hosts/lists.php?type=tick
+    return_content: true
+  register: filterlists
+
+- name: Ensures /etc/pihole/adlists.lists exists
+  become: true
+  copy:
+    content: ""
+    dest: /etc/pihole/adlists.list
+    force: false
+    group: root
+    owner: root
+    mode: 0644
+
+- name: add default filterlists
+  blockinfile:
+    path: /etc/pihole/adlists.list
+    block: |
+      https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+      https://mirror1.malwaredomains.com/files/justdomains
+      http://sysctl.org/cameleon/hosts
+      https://zeustracker.abuse.ch/blocklist.php?download=domainblocklist
+      https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
+      https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
+      https://hosts-file.net/ad_servers.txt
+    marker: "<!-- {mark} ANSIBLE MANAGED DEFAULT FILTERS -->"
+    owner: root
+    group: root
+    mode: 0644
+  notify: update filterlists
+
+- name: add filterlists
+  blockinfile:
+    path: /etc/pihole/adlists.list
+    block: "{{ filterlists.content }}"
+    marker: "<!-- {mark} ANSIBLE MANAGED ADDITIONAL FILTERS -->"
+    owner: root
+    group: root
+    mode: 0644
+  notify: update filterlists
+
+- name: Reboot immediately if there was a change.
+  shell: "sleep 5 && reboot"
+  async: 1
+  poll: 0
+  when: reboot_device is changed
+
+- name: Wait for the reboot to complete if there was a change.
+  wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300
+  when: reboot_device is changed
