@@ -53,6 +53,7 @@
     url: https://v.firebog.net/hosts/lists.php?type=tick
     return_content: true
   register: filterlists
+  notify: update_filterlists
 
 - name: add filterlists
   blockinfile:
@@ -62,7 +63,6 @@
     owner: root
     group: root
     mode: 0644
-  notify: update_filterlists
 
 - name: update_filterlists
   command: pihole -g
