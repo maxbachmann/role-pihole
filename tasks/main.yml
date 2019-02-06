@@ -19,6 +19,7 @@
   hostname:
     name: pihole
   register: reboot_device
+  when: molecule_test != true
 
 - name: Ensures /etc/pihole dir exists
   become: true
