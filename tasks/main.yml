@@ -42,11 +42,7 @@
     repo: 'https://github.com/pi-hole/pi-hole.git'
     dest: /home/Pi-hole
     depth: 1
-    notify: install_pihole
-
-- name: install_pihole
-  command: bash "/home/Pi-hole/automated install/basic-install.sh" --unattended
-  become: true
+    notify: install pihole
 
 - name: download filterlists
   uri:
@@ -62,7 +58,7 @@
     owner: root
     group: root
     mode: 0644
-  notify: update_filterlists
+  notify: update filterlists
 
 - name: Install unbound
   apt:
