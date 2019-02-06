@@ -94,9 +94,10 @@
     state: directory
 
 - name: download root hints
+  become: true
   get_url:
     url: https://www.internic.net/domain/named.cache
-    dest: /var/lib/unbound/root.hints
+    dest: /etc/unbound/root.hints
 
 - name: add cronjob to update root hints
   become: true
