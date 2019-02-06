@@ -119,7 +119,3 @@
     delay: 5
     timeout: 300
   when: reboot_device is changed
-
-handlers:
-  - name: update_filterlists
-    command: pihole -g
