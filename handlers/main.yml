@@ -1,2 +1,3 @@
+ ---
  - name: update_filterlists
    command: pihole -g
