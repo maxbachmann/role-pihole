@@ -90,7 +90,7 @@
 - name: Ensures /var/lib/unbound dir exists
   become: true
   file:
-    path: /var/lib/unbound
+    path: /var/lib/unbound/unbound.conf.d
     state: directory
 
 - name: download root hints
