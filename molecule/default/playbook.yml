@@ -5,6 +5,7 @@
 
   vars:
     molecule_test: true
+    ipv6_address: fe80::c9ac:6448:10e3:35f8
 
   pre_tasks:
     - name: Update apt cache.
