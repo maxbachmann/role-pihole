@@ -50,7 +50,7 @@
   copy:
     content: ""
     dest: /etc/pihole/adlists.list
-    force: no
+    force: false
     group: root
     owner: root
     mode: 0644
