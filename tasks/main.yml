@@ -46,8 +46,8 @@
     force: false
     mode: 0777
   notify: install pihole
-  
-- name: test 
+
+- name: test
   debug:
     msg: "{{installer | regex_replace('stty size ||')}}"
 
