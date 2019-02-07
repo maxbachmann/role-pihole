@@ -67,7 +67,7 @@ fi
 
 
 # Find the rows and columns will default to 80x24 if it can not be detected
-screen_size=$(stty size || printf '%d %d' 24 80)
+screen_size=$(printf '%d %d' 24 80)
 # Set rows variable to contain first number
 printf -v rows '%d' "${screen_size%% *}"
 # Set columns variable to contain second number
