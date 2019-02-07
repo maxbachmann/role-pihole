@@ -10,6 +10,12 @@
       - vim
       - htop
       - git
+ 
+ - name: Install dhcpcd5
+  apt:
+    name: dhcpcd5
+    state: present
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: "Setting hostname to 'pihole'"
   hostname:
@@ -47,10 +53,6 @@
     force: false
     mode: 0777
   notify: install pihole
-
-- name: test
-  debug:
-    msg: "{{installer.content | regex_replace('stty size \\|\\| ')}}"
 
 - name: download filterlists
   uri:
