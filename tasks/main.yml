@@ -32,8 +32,8 @@
       - dhcpcd5
       - dnsutils
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-  
-  - name: Install dhcpcd5
+
+- name: Install dhcpcd5
   become: true
   apt:
     name: "{{ packages }}"
@@ -42,8 +42,8 @@
     packages:
       - dns-root-data
   when: ansible_distribution == 'Debian'
-  
-  - name: Install dhcpcd5
+
+- name: Install dhcpcd5
   become: true
   apt:
     name: "{{ packages }}"
