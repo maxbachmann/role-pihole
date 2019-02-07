@@ -39,26 +39,40 @@
     version: master
   notify: install pihole
 
-- name: fix installer
+- name: fix installer0
   become: true
   replace:
     path: /home/Pi-hole/automated install/basic-install.sh
     regexp: "screen_size="
-    replace: 'rows=24'
+    replace: ''
 
-- name: fix installer
+- name: fix installer1
   become: true
   replace:
     path: /home/Pi-hole/automated install/basic-install.sh
     regexp: 'printf -v rows'
-    replace: 'columns=80'
+    replace: ''
 
-- name: fix installer
+- name: fix installer2
   become: true
   replace:
     path: /home/Pi-hole/automated install/basic-install.sh
     regexp: 'printf -v columns'
     replace: ''
+
+- name: fix installer3
+  become: true
+  replace:
+    path: /home/Pi-hole/automated install/basic-install.sh
+    regexp: 'r=$(( rows / 2 ))'
+    replace: 'r=12'
+
+- name: fix installer4
+  become: true
+  replace:
+    path: /home/Pi-hole/automated install/basic-install.sh
+    regexp: 'c=$(( columns / 2 ))'
+    replace: 'c=40'
 
 - name: download filterlists
   uri:
