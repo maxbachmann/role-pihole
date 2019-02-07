@@ -12,6 +12,7 @@
       - git
  
 - name: Install dhcpcd5
+  become: true
   apt:
     name: dhcpcd5
     state: present
