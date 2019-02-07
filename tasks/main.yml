@@ -5,6 +5,7 @@
     state: present
   vars:
     packages:
+      - dialog
       - dbus
       - vim
       - htop
