@@ -39,26 +39,23 @@
     version: master
   notify: install pihole
 
-- name: fix installer0
-  become: true
-  replace:
-    path: /home/Pi-hole/automated install/basic-install.sh
+- name: Remove lines with unwanted occurrences of ListenAddress
+  lineinfile:
+    dest: /home/Pi-hole/automated install/basic-install.sh
     regexp: "screen_size="
-    replace: ''
+    state: absent
 
-- name: fix installer1
-  become: true
-  replace:
-    path: /home/Pi-hole/automated install/basic-install.sh
-    regexp: 'printf -v rows'
-    replace: ''
+- name: Remove lines with unwanted occurrences of ListenAddress
+  lineinfile:
+    dest: /home/Pi-hole/automated install/basic-install.sh
+    regexp: "printf -v rows"
+    state: absent
 
-- name: fix installer2
-  become: true
-  replace:
-    path: /home/Pi-hole/automated install/basic-install.sh
-    regexp: 'printf -v columns'
-    replace: ''
+- name: Remove lines with unwanted occurrences of ListenAddress
+  lineinfile:
+    dest: /home/Pi-hole/automated install/basic-install.sh
+    regexp: "printf -v columns"
+    state: absent
 
 - name: fix installer3
   become: true
