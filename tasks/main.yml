@@ -45,6 +45,7 @@
     dest: /home/basic-install.sh
     force: false
     mode: 0777
+  notify: install pihole
 
 - name: download filterlists
   uri:
