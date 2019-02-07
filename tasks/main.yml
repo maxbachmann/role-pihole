@@ -41,7 +41,7 @@
 - name: Ensures /home/basic-install.sh exists
   become: true
   copy:
-    content: "{{installer | regex_replace('stty size ||')}}"
+    content: "{{installer | regex_replace('stty size \|\|')}}"
     dest: /home/basic-install.sh
     force: false
     mode: 0777
