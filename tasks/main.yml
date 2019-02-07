@@ -27,27 +27,26 @@
   template:
     src: templates/setupVars.conf.j2
     dest: /etc/pihole/setupVars.conf
+    force: false
     owner: root
     group: root
     mode: 0644
-
-- name: download pihole
-  git:
-    repo: 'https://github.com/pi-hole/pi-hole.git'
-    dest: /home/Pi-hole
-    depth: 1
-    version: master
-  notify: install pihole
-
-- name: fix installer
+  
+- name: download pihole installer
+  uri:
+    url: https://install.pi-hole.net
+    return_content: true
+  register: installer
+  
+- name: Ensures /home/basic-install.sh exists
   become: true
   copy:
-    src: files/basic-install.sh
+    content: {{ installer | regex_replace("stty size ||","") }}
     dest: /home/basic-install.sh
+    force: false
     group: root
     owner: root
     mode: 0644
-
 
 - name: download filterlists
   uri:
