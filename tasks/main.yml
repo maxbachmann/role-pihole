@@ -5,6 +5,7 @@
     state: present
   vars:
     packages:
+      - php
       - lighttpd
       - idn2
       - wget
@@ -25,8 +26,6 @@
     state: present
   vars:
     packages:
-      - php5-cgi
-      - php5-common
       - sqlite3
       - netcat
       - dhcpcd5
@@ -42,16 +41,6 @@
     packages:
       - dns-root-data
   when: ansible_distribution == 'Debian'
-
-- name: Install dhcpcd5
-  become: true
-  apt:
-    name: "{{ packages }}"
-    state: present
-  vars:
-    packages:
-      - php5-sqlite
-  when: ansible_distribution == 'Ubuntu'
 
 - name: "Setting hostname to 'pihole'"
   hostname:
