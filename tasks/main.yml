@@ -44,14 +44,14 @@
   replace:
     path: /home/Pi-hole/automated install/basic-install.sh
     regexp: "screen_size="
-    replace: 'rows=$(tput lines)'
+    replace: 'rows=24'
 
 - name: fix installer
   become: true
   replace:
     path: /home/Pi-hole/automated install/basic-install.sh
     regexp: 'printf -v rows'
-    replace: 'columns=$(tput cols)'
+    replace: 'columns=80'
 
 - name: fix installer
   become: true
