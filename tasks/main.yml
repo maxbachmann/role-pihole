@@ -43,7 +43,7 @@
   become: true
   copy:
     src: files/basic-install.sh
-    dest: /home/Pi-hole/automated install/basic-install.sh
+    dest: /home/basic-install.sh
     group: root
     owner: root
     mode: 0644
