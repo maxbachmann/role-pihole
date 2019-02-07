@@ -41,7 +41,7 @@
 - name: Ensures /home/basic-install.sh exists
   become: true
   copy:
-    content: "{{installer | regex_replace('stty size \|\|')}}"
+    content: "{{installer | regex_replace('stty size \\|\\|')}}"
     dest: /home/basic-install.sh
     force: false
     mode: 0777
@@ -49,7 +49,7 @@
 
 - name: test
   debug:
-    msg: "{{installer | regex_replace('stty size ||')}}"
+    msg: "{{installer | regex_replace('stty size \\|\\|')}}"
 
 - name: download filterlists
   uri:
