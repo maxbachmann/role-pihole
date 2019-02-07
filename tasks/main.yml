@@ -21,7 +21,7 @@
     packages:
       - whiptail
       - resolvconf
-      - libcap2-bin 
+      - libcap2-bin
       - php
       - php-sqlite3
       - php-cgi
