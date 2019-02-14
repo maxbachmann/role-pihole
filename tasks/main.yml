@@ -44,27 +44,34 @@
   register: git_result
   until: git_result is succeeded
   notify: install pihole
-  
+
+# - name: fix installer
+#  become: true
+#  replace:
+#    path: /home/Pi-hole/automated install/basic-install.sh
+#    regexp: "screen_size=$(stty size || printf '%d %d' 24 80)"
+#    replace: "rows=$(tput lines)"
+
 - name: fix installer
   become: true
   replace:
     path: /home/Pi-hole/automated install/basic-install.sh
-    regexp: 'screen_size=$(stty size || printf '%d %d' 24 80)'
-    replace: 'rows=$(tput lines)'
-    
-- name: fix installer
-  become: true
-  replace:
-    path: /home/Pi-hole/automated install/basic-install.sh
-    regexp: 'printf -v rows '%d' "${screen_size%% *}"'
-    replace: 'columns=$(tput cols)'
-    
-- name: fix installer
-  become: true
-  replace:
-    path: /home/Pi-hole/automated install/basic-install.sh
-    regexp: 'printf -v columns '%d' "${screen_size##* }"'
-    replace: ''
+    regexp: "screen_size=$(stty size || printf '%d %d' 24 80)"
+    replace: "printf -v screen_size '24 80'"
+
+# - name: fix installer
+#  become: true
+#  replace:
+#    path: /home/Pi-hole/automated install/basic-install.sh
+#    regexp: 'printf -v rows '%d' "${screen_size%% *}"'
+#    replace: 'columns=$(tput cols)'
+
+# - name: fix installer
+#  become: true
+#  replace:
+#    path: /home/Pi-hole/automated install/basic-install.sh
+#    regexp: 'printf -v columns '%d' "${screen_size##* }"'
+#    replace: ''
 
 - name: download filterlists
   uri:
