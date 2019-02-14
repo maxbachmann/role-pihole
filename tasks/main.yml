@@ -6,9 +6,11 @@
   vars:
     packages:
       - dbus
-      - vim
-      - htop
       - git
+  retries: 5
+  delay: 2
+  register: package_result
+  until: package_result is succeeded
 
 - name: "Setting hostname to 'pihole'"
   hostname:
@@ -37,6 +39,10 @@
     dest: /home/Pi-hole
     depth: 1
     version: master
+  retries: 5
+  delay: 2
+  register: git_result
+  until: git_result is succeeded
   notify: install pihole
   
 - name: fix installer
@@ -64,7 +70,10 @@
   uri:
     url: https://v.firebog.net/hosts/lists.php?type=tick
     return_content: true
+  retries: 5
+  delay: 2
   register: filterlists
+  until: filterlists is succeeded
 
 - name: Ensures /etc/pihole/adlists.lists exists
   become: true
@@ -107,7 +116,9 @@
   shell: "sleep 5 && reboot"
   async: 1
   poll: 0
-  when: reboot_device is changed
+  when:
+    - reboot_device is changed
+    - molecule_test != true
 
 - name: Wait for the reboot to complete if there was a change.
   wait_for_connection:
@@ -115,4 +126,6 @@
     sleep: 5
     delay: 5
     timeout: 300
-  when: reboot_device is changed
+  when:
+    - reboot_device is changed
+    - molecule_test != true
