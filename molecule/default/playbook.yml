@@ -13,4 +13,4 @@
       changed_when: false
 
   roles:
-    - role: pihole-ansible
+    - role: role-pihole
