@@ -50,7 +50,7 @@
   register: filterlists
   until: filterlists is succeeded
 
-- name: Ensures /etc/pihole/adlists.lists exists
+- name: add first filterlists
   become: true
   copy:
     content: "files/adlist.list"
