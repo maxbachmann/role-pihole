@@ -5,6 +5,7 @@ ipv4_address: "{{ hostvars[inventory_hostname]['ansible_' + network_interface]['
 # per default just use the first available ipv6 address on the interface
 ipv6: true
 ipv6_address: "{{ hostvars[inventory_hostname]['ansible_' + network_interface]['ipv6'][0]['address'] }}"
-dns_server: 127.0.0.1#5353
+dns_server_1: 127.0.0.1#5353
+dns_server_2: 127.0.0.1#5353
 web_password: password
 install_web_server: true
