@@ -1,7 +1,7 @@
 ---
 - name: install pihole
   become: true
-  command: bash "/home/Pi-hole/automated install/basic-install.sh" --unattended
+  command: bash "/tmp/Pi-hole/automated install/basic-install.sh" --unattended
 
 - name: update filterlists
   command: pihole -g
