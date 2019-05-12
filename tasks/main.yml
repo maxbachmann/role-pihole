@@ -50,22 +50,11 @@
   register: filterlists
   until: filterlists is succeeded
 
-- name: add first filterlists
-  become: true
-  copy:
-    content: "files/adlist.list"
-    dest: /etc/pihole/adlists.list
-    force: false
-    group: root
-    owner: root
-    mode: 0644
-  notify: update filterlists  
-
 - name: add filterlists
-  blockinfile:
-    path: /etc/pihole/adlists.list
-    block: "{{ filterlists.content }}"
-    marker: "<!-- {mark} ANSIBLE MANAGED ADDITIONAL FILTERS -->"
+  become: true
+  template:
+    src: templates/adlist.list
+    dest: /etc/pihole/adlists.list
     owner: root
     group: root
     mode: 0644
