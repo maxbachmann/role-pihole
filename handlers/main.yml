@@ -8,3 +8,4 @@
 
 - name: set password
   command: pihole -a -p "{{ web_password }}"
+  when: install_web_server
