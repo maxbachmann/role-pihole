@@ -7,4 +7,4 @@
   command: pihole -g
 
 - name: set password
-  command: pihole -a -p {{ web_password }}
+  command: pihole -a -p "{{ web_password }}"
