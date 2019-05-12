@@ -2,8 +2,9 @@
 - name: install pihole
   become: true
   command: bash "/home/Pi-hole/automated install/basic-install.sh" --unattended
-  when: not molecule_test
 
 - name: update filterlists
   command: pihole -g
-  when: not molecule_test
+
+- name: set password
+  command: pihole -a -p "{{ web_password }}"

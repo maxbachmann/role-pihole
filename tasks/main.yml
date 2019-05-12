@@ -16,7 +16,6 @@
   hostname:
     name: pihole
   register: reboot_device
-  when: not molecule_test
 
 - name: Ensures /etc/pihole dir exists
   become: true
@@ -43,7 +42,9 @@
   delay: 2
   register: git_result
   until: git_result is succeeded
-  notify: install pihole
+  notify:
+    - install pihole
+    - set password
 
 - name: download filterlists
   uri:
