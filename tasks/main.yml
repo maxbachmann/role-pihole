@@ -27,15 +27,10 @@
     group: root
     mode: 0644
 
-- name: Ensures /home/Pi-hole dir exists
-  file:
-    path: /home/Pi-hole
-    state: directory
-
 - name: download pihole
   git:
     repo: 'https://github.com/pi-hole/pi-hole.git'
-    dest: /home/Pi-hole
+    dest: /tmp/Pi-hole
     depth: 1
     version: master
   retries: 5
