@@ -12,11 +12,6 @@
   register: package_result
   until: package_result is succeeded
 
-- name: "Setting hostname to 'pihole'"
-  hostname:
-    name: pihole
-  register: reboot_device
-
 - name: Ensures /etc/pihole dir exists
   become: true
   file:
